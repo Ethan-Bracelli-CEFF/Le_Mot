@@ -1,0 +1,119 @@
+.MOT-titre {
+    font-size: 100px;
+    margin-top: 3px;
+    color: #FAF0E6;
+}
+
+.big-MOT {
+    font-size: 200px;
+    margin-top: 10px;
+    color: #FAF0E6;
+}
+
+.row-header {
+    background-color: #5C5470;
+}
+
+.bg-color {
+    background-color: #352F44;
+}
+
+.bouton-main {
+    background-color: #FAF0E6;
+    width: 200px;
+    font-size: 23px;
+    color: #5C5470;
+    border: none;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.bouton-main:hover {
+    background-color: #B9B4C7;
+    color: #352F44;
+}
+
+.btn-danger {
+    background-color: #e20000;
+    width: 100%;
+    font-size: 23px;
+    color: #ffffff;
+    border: none;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left: 5px;
+    margin-top: 2px;
+}
+
+.btn-danger:hover {
+    background-color: #c90000;
+    color: #d4d4d4;
+}
+
+.form-label {
+    color: #B9B4C7;
+    font-size: 23px;
+}
+
+.form-select {
+    color: #B9B4C7;
+    font-size: 23px;
+    width: 300px;
+}
+
+.big-username {
+    font-size: 100px;
+    margin-top: 3px;
+    color: #FAF0E6
+}
+
+.fond {
+    background:#5C5470;
+}
+
+.input-custom {
+    background-color: #eaeaea;
+    border: none;
+    padding: 10px;
+}
+
+.priv-tab {
+    width: 100%;
+}
+
+.public-tab {
+    width: 100%;
+}
+
+.text-tab {
+    color: #FAF0E6;
+    font-size: 53px;
+
+}
+
+.list-host {
+    background-color: #50339b;
+    color: #FAF0E6;
+}
+
+.list-player {
+    background-color: #FAF0E6;
+    color: #5C5470;
+}
+
+.list-group {
+    width: 100%;
+
+}
+
+.row-list {
+    height: 40px;
+}
