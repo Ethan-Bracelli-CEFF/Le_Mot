@@ -9,6 +9,8 @@ $gameHostId = intval($game['hostId']);
 $gameHost = $db->getUser($gameHostId);
 $gameCode = $game['code'];
 
+$gameState = $db->isStarted($gameId);
+
 $gamePlayers = $db->getPlayersByGame($gameId);
 
 // Extraire tous les 'id_utilisateur' depuis $gamePlayers
@@ -17,6 +19,11 @@ $ids_joueurs = array_column($gamePlayers, 'id_utilisateur');
 // Vérifier si l'utilisateur connecté est dans cette liste
 if (!in_array($_SESSION['user_id'], $ids_joueurs)) {
     header("Location: main.php");
+    exit();
+}
+
+if ($gameState['started'] === 1){
+    header("Location: lobby.php");
     exit();
 }
 

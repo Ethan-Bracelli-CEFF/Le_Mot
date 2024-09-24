@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['code']) && isset($_POS
     $code = $_POST['code'];
     $password = $_POST['password'];
     $game = $db->getPrivateGameByCode($code);
-    if (isset($game)) {
+    if (isset($game) && $game !== false) {
         if ($password === $game['password']) {
             $_SESSION['game'] = $game;
             $db->updatePlayerGame($_SESSION['user_id'], $game['id_game']);

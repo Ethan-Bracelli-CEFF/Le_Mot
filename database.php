@@ -91,7 +91,7 @@ class Database
 
     public function createPublicGame($name, $hostId, $difficulty)
     {
-        $stmt = $this->db->prepare("INSERT INTO games (name, hostId, difficulty, private) VALUES (:name, :hostId, :difficulty, 0)");
+        $stmt = $this->db->prepare("INSERT INTO games (name, hostId, difficulty, private, started) VALUES (:name, :hostId, :difficulty, 0, 0)");
         $stmt->bindParam(':name', $name, PDO::PARAM_STR);
         $stmt->bindParam(':hostId', $hostId, PDO::PARAM_STR);
         $stmt->bindParam(':difficulty', $difficulty, PDO::PARAM_STR);
@@ -100,7 +100,7 @@ class Database
 
     public function createPrivateGame($name, $hostId, $difficulty, $code, $password)
     {
-        $stmt = $this->db->prepare("INSERT INTO games (name, hostId, difficulty, code, password, private) VALUES (:name, :hostId, :difficulty, :code, :password, 1)");
+        $stmt = $this->db->prepare("INSERT INTO games (name, hostId, difficulty, code, password, private, started) VALUES (:name, :hostId, :difficulty, :code, :password, 1, 0)");
         $stmt->bindParam(':name', $name, PDO::PARAM_STR);
         $stmt->bindParam(':hostId', $hostId, PDO::PARAM_STR);
         $stmt->bindParam(':difficulty', $difficulty, PDO::PARAM_STR);
@@ -149,6 +149,19 @@ class Database
         $stmt->bindParam(':gameId', $gameId, PDO::PARAM_INT);
         $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
         $stmt->execute();
+    }
+
+    public function startGame($gameId) {
+        $stmt = $this->db->prepare("UPDATE games SET started = 1 WHERE id_game = :gameId");
+        $stmt->bindParam(':gameId', $gameId, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public function isStarted($gameId) {
+        $stmt = $this->db->prepare("SELECT started FROM games WHERE id_game = :gameId");
+        $stmt->bindParam(':gameId', $gameId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function deletegame($gameId)
