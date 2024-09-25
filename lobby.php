@@ -24,7 +24,7 @@ $db->startGame($gameId);
 
 $gameState = $db->isStarted($gameId);
 
-if ($gameState['started'] === 0){
+if ($gameState['started'] === 0) {
     header("Location: main.php");
     exit();
 }
@@ -45,7 +45,8 @@ if ($gameState['started'] === 0){
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
     <link href="/Le_Mot.css" rel="stylesheet" />
-
+    <link rel="stylesheet" href="wordle.css">
+    <script src="wordle.js"></script>
 </head>
 
 
@@ -120,7 +121,7 @@ if ($gameState['started'] === 0){
                                 <!-- Bouton pour retirer un joueur -->
                                 <div class="col-12 d-flex justify-content-center" style="margin-bottom: 20px; margin-top: 100px;">
                                     <form method="post" action="delete_a_game.php">
-                                        <input type="hidden" name="player_id" value="<?= htmlspecialchars($player['id_utilisateur']) ?>">
+                                        <input type="hidden" name="player_id" value="<?= htmlspecialchars($_SESSION['user_id']) ?>">
                                         <input type="hidden" name="game_id" value="<?= htmlspecialchars($gameId) ?>">
                                         <button type="submit" class="btn btn-danger btn-sm">Quitter la partie</button>
                                     </form>
@@ -131,7 +132,7 @@ if ($gameState['started'] === 0){
                                 <!-- Bouton pour retirer un joueur -->
                                 <div class="col-12 d-flex justify-content-center" style="margin-bottom: 20px; margin-top: 100px;">
                                     <form method="post" action="leave_a_game.php">
-                                        <input type="hidden" name="player_id" value="<?= htmlspecialchars($player['id_utilisateur']) ?>">
+                                        <input type="hidden" name="player_id" value="<?= htmlspecialchars($_SESSION['user_id']) ?>">
                                         <input type="hidden" name="game_id" value="<?= htmlspecialchars($gameId) ?>">
                                         <button type="submit" class="btn btn-danger btn-sm">Quitter la partie</button>
                                     </form>
@@ -145,13 +146,20 @@ if ($gameState['started'] === 0){
 
                 <div class="ms-5 col-8 mx-0">
                     <div class="container fond rounded-5 public-tab">
-                        <!-- <div class="row"> -->
+                        <h1 id="title">
                         <?php if ($game['private'] === 1): ?>
-                            <h1 class="text-center text-tab p-3">Code de la partie : <?= htmlspecialchars($gameCode) ?></h1>
-                        <?php else: ?>
-                            <h1 class="text-center text-tab p-3">Nom de la partie : <?= htmlspecialchars($game['name']) ?></h1>
-                        <?php endif; ?>
-                        <!-- </div> -->
+                                <h1 class="text-center text-tab p-3">Code de la partie : <?= htmlspecialchars($gameCode) ?></h1>
+                            <?php else: ?>
+                                <h1 class="text-center text-tab p-3">Nom de la partie : <?= htmlspecialchars($game['name']) ?></h1>
+                            <?php endif; ?>
+                        </h1>
+                        <br>
+                        <div id="board">
+                        </div>
+
+                        <h1 id="answer"></h1>
+                        <div id="keyboard" class="pb-5 mt-5">
+                        </div>
                     </div>
                 </div>
             </div>
