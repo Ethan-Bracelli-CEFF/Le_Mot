@@ -6,14 +6,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
     $difficulty = $_POST['difficulty'];
     $host = $_SESSION['user_id'];
+    $nbRound =  intval($_POST['nbRound']);
 
-if (isset($name) && isset($difficulty) && isset($host)) {
+
+    if (isset($name) && isset($difficulty) && isset($host)) {
         $db = new Database();
-        $db->createPublicGame($name, $host, $difficulty);
+        $db->createPublicGame($name, $host, $difficulty, $nbRound);
         $game = $db->getPublicGameByHost($host);
         $_SESSION['game'] = $game;
         $db->updatePlayerGame($_SESSION['user_id'], $game['id_game']);
-        
+
         header("Location: waiting_room.php");
         exit();
     }
@@ -54,6 +56,14 @@ if (isset($name) && isset($difficulty) && isset($host)) {
                     </div>
                     <div class="col-6 d-flex justify-content-start">
                         <input type="text" name="name" class="form-control input-custom" style="width: 300px;" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-6 d-flex justify-content-end">
+                        <label for="nbRound" class="form-label">Entrez le nombre de round :</label>
+                    </div>
+                    <div class="col-6 d-flex justify-content-start">
+                        <input type="number" name="nbRound" class="form-control input-custom" style="width: 300px;" required min="1">
                     </div>
                 </div>
                 <div class="row" style="margin-bottom: 100px;">

@@ -14,9 +14,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['code']) && isset($_POS
     $game = $db->getPrivateGameByCode($code);
     if (isset($game) && $game !== false) {
         if ($password === $game['password']) {
-            $_SESSION['game'] = $game;
-            $db->updatePlayerGame($_SESSION['user_id'], $game['id_game']);
-            header('Location: waiting_room.php');
+            if($game['started'] === 0){
+                $_SESSION['game'] = $game;
+                $db->updatePlayerGame($_SESSION['user_id'], $game['id_game']);
+                header('Location: waiting_room.php');
+            } else {
+                echo "<script>alert('Cette partie a déjà commencé !');</script>";
+            }
         } else {
             echo "<script>alert('Le mot de passe est incorrect.');</script>";
         }

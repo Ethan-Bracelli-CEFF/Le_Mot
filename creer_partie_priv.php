@@ -7,11 +7,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
     $difficulty = $_POST['difficulty'];
     $host = $_SESSION['user_id'];
+    $nbRound = $_POST['nbRound'];
     $code = strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 4));
 
 if (isset($name) && isset($password) && isset($difficulty) && isset($host) && isset($code)) {
         $db = new Database();
-        $db->createPrivateGame($name, $host, $difficulty, $code, $password);
+        $db->createPrivateGame($name, $host, $difficulty, $code, $password, $nbRound);
         $game = $db->getPrivateGameByCode($code);
         $_SESSION['game'] = $game;
         $db->updatePlayerGame($_SESSION['user_id'], $game['id_game']);
@@ -66,6 +67,14 @@ if (isset($name) && isset($password) && isset($difficulty) && isset($host) && is
                         <input type="password" name="password" class="form-control input-custom" style="width: 300px;" required>
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <div class="col-6 d-flex justify-content-end">
+                        <label for="nbRound" class="form-label">Entrez le nombre de round :</label>
+                    </div>
+                    <div class="col-6 d-flex justify-content-start">
+                        <input type="number" name="nbRound" class="form-control input-custom" style="width: 300px;" required min="1">
+                    </div>
+                </div>
                 <div class="row" style="margin-bottom: 100px;">
                     <div class="col-6 d-flex justify-content-end">
                         <label for="difficulty" class="form-label">Choisissez la difficulté :</label>
@@ -78,6 +87,7 @@ if (isset($name) && isset($password) && isset($difficulty) && isset($host) && is
                         </select>
                     </div>
                 </div>
+                
 
 
                 <!-- Boutons -->

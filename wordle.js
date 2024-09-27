@@ -1,6 +1,7 @@
+var word = document.getElementById("wordInput").value;
 
 var height = 6; //number of guesses
-var width = 5; //length of the word
+var width = word.length; //length of the word
 
 var row = 0; //current guess (attempt #)
 var col = 0; //current letter for that attempt
@@ -13,7 +14,9 @@ var guessList = ["aahed", "aalii", "aargh", "aarti", "abaca", "abaci", "abacs", 
 
 guessList = guessList.concat(wordList);
 
-var word = wordList[Math.floor(Math.random() * wordList.length)].toUpperCase();
+var guesses = 0; // Compteur de tentatives
+const MAX_ATTEMPTS = 6; // Nombre maximum de tentatives
+
 console.log(word);
 
 window.onload = function () {
@@ -79,8 +82,28 @@ function intialize() {
 
     // Listen for Key Press
     document.addEventListener("keyup", (e) => {
-        processInput(e);
-    })
+        let keyPressed = e.key;
+
+        // Gestion des touches spéciales
+        if (keyPressed === "Enter") {
+            processInput({ code: "Enter" });
+            return;
+        } else if (keyPressed === "Backspace") {
+            processInput({ code: "Backspace" });
+            return;
+        }
+
+        // Corrige la correspondance des touches pour un clavier QWERTZ
+        if (keyPressed === "Y") {
+            keyPressed = "Z";
+        } else if (keyPressed === "Z") {
+            keyPressed = "Y";
+        }
+
+        // Recompose l'événement avec la touche corrigée
+        let correctedEvent = { code: "Key" + keyPressed.toUpperCase() };
+        processInput(correctedEvent);
+    });
 }
 
 function processKey() {
@@ -123,44 +146,43 @@ function update() {
     let guess = "";
     document.getElementById("answer").innerText = "";
 
-    //string up the guesses into the word
+    // String up the guesses into the word
     for (let c = 0; c < width; c++) {
         let currTile = document.getElementById(row.toString() + '-' + c.toString());
         let letter = currTile.innerText;
         guess += letter;
     }
 
-    guess = guess.toLowerCase(); //case sensitive
+    guess = guess.toLowerCase(); // case sensitive
     console.log(guess);
 
     if (!guessList.includes(guess)) {
-        document.getElementById("answer").innerText = "Not in word list";
+        document.getElementById("answer").innerText = "Ce mot n'est pas reconnu";
         return;
     }
 
-    //start processing guess
+    // Start processing guess
     let correct = 0;
 
-    let letterCount = {}; //keep track of letter frequency, ex) KENNY -> {K:1, E:1, N:2, Y: 1}
+    let letterCount = {}; // Keep track of letter frequency
     for (let i = 0; i < word.length; i++) {
         let letter = word[i];
 
         if (letterCount[letter]) {
             letterCount[letter] += 1;
-        }
-        else {
+        } else {
             letterCount[letter] = 1;
         }
     }
 
     console.log(letterCount);
 
-    //first iteration, check all the correct ones first
+    // First iteration, check all the correct ones first
     for (let c = 0; c < width; c++) {
         let currTile = document.getElementById(row.toString() + '-' + c.toString());
         let letter = currTile.innerText;
 
-        //Is it in the correct position?
+        // Is it in the correct position?
         if (word[c] == letter) {
             currTile.classList.add("correct");
 
@@ -169,23 +191,24 @@ function update() {
             keyTile.classList.add("correct");
 
             correct += 1;
-            letterCount[letter] -= 1; //deduct the letter count
+            letterCount[letter] -= 1; // Deduct the letter count
         }
 
         if (correct == width) {
             gameOver = true;
+            guesses++; // Incrémente le compteur de tentatives
+            sendGuesses(guesses); // Appelle la fonction pour envoyer les tentatives
         }
     }
 
-    console.log(letterCount);
-    //go again and mark which ones are present but in wrong position
+    // Go again and mark which ones are present but in the wrong position
     for (let c = 0; c < width; c++) {
         let currTile = document.getElementById(row.toString() + '-' + c.toString());
         let letter = currTile.innerText;
 
-        // skip the letter if it has been marked correct
+        // Skip the letter if it has been marked correct
         if (!currTile.classList.contains("correct")) {
-            //Is it in the word?         //make sure we don't double count
+            // Is it in the word? 
             if (word.includes(letter) && letterCount[letter] > 0) {
                 currTile.classList.add("present");
 
@@ -194,15 +217,30 @@ function update() {
                     keyTile.classList.add("present");
                 }
                 letterCount[letter] -= 1;
-            } // Not in the word or (was in word but letters all used up to avoid overcount)
-            else {
+            } else {
                 currTile.classList.add("absent");
                 let keyTile = document.getElementById("Key" + letter);
-                keyTile.classList.add("absent")
+                keyTile.classList.add("absent");
             }
         }
     }
 
-    row += 1; //start new row
-    col = 0; //start at 0 for new row
+    row += 1; // Start new row
+    col = 0; // Start at 0 for new row
+    guesses++; // Incrémente le compteur de tentatives
+
+    // Vérifie si le jeu est terminé (soit par victoire, soit par épuisement des tentatives)
+    if (gameOver || row >= MAX_ATTEMPTS) {
+        gameOver = true;
+        document.getElementById("answer").innerText = word;
+        sendGuesses(guesses); // Appelle la fonction pour envoyer les tentatives
+    }
+
+function sendGuesses(guesses) {
+    // Met à jour le champ caché avec le nombre de tentatives
+    document.getElementById('guessesInput').value = guesses;
+    
+    // Soumet le formulaire pour envoyer les données à PHP
+    document.getElementById('guessesForm').submit();
+}
 }

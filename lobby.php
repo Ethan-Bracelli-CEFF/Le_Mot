@@ -8,6 +8,10 @@ $gameName = $game['name'];
 $gameHostId = intval($game['hostId']);
 $gameHost = $db->getUser($gameHostId);
 $gameCode = $game['code'];
+$nbRound = $game['nbRound'];
+$word = $db->getWordByUser($_SESSION['user_id']);
+$roundId = $db->getRoundIdByUser($_SESSION['user_id']);
+$roundNumber = $db->getRoundNumberById($roundId);
 
 $gamePlayers = $db->getPlayersByGame($gameId);
 
@@ -24,11 +28,20 @@ $db->startGame($gameId);
 
 $gameState = $db->isStarted($gameId);
 
-if ($gameState['started'] === 0) {
+if ($gameState['status'] === 0) {
     header("Location: main.php");
     exit();
 }
 
+if (isset($_POST['guesses'])) {
+    $guesses = intval($_POST['guesses']);
+    $db->addPoints($_SESSION['user_id'], $guesses);
+}
+
+if ($roundNumber > $nbRound) {
+    $roundNumber = 0;
+    header("Location: leaderboard.php")
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -70,7 +83,7 @@ if ($gameState['started'] === 0) {
                 <div class="col-3 mx-0">
                     <div class="container fond rounded-5 priv-tab">
                         <!-- <div class="row"> -->
-                        <h1 class="text-center text-tab pt-4" style="margin-bottom: 100px;">Participants</h1>
+                        <h1 class="text-center text-tab pt-4" style="margin-bottom: 100px;">Classement</h1>
                         <div class="container">
                             <!-- <div class="row"> -->
                             <?php foreach ($gamePlayers as $player): ?>
@@ -146,17 +159,25 @@ if ($gameState['started'] === 0) {
 
                 <div class="ms-5 col-8 mx-0">
                     <div class="container fond rounded-5 public-tab">
-                        <h1 id="title">
-                        <?php if ($game['private'] === 1): ?>
-                                <h1 class="text-center text-tab p-3">Code de la partie : <?= htmlspecialchars($gameCode) ?></h1>
-                            <?php else: ?>
-                                <h1 class="text-center text-tab p-3">Nom de la partie : <?= htmlspecialchars($game['name']) ?></h1>
-                            <?php endif; ?>
-                        </h1>
+                        <h3 id="title">
+                            <div class="row">
+                                <?php if ($game['private'] === 1): ?>
+                                    <div class="col">
+                                        <h3 class="text-center text-tab p-3">Code de la partie : <?= htmlspecialchars($gameCode) ?></h3>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="col">
+                                        <h3 class="text-center text-tab p-3">Nom de la partie :<br><?= htmlspecialchars($game['name']) ?></h3>
+                                    </div>
+                                <?php endif; ?>
+                                <div class="col">
+                                    <h3 class="text-center text-tab p-3"> Round : <?php echo ($roundNumber."/".$nbRound) ?></h3>
+                                </div>
+                            </div>
+                        </h3>
                         <br>
                         <div id="board">
                         </div>
-
                         <h1 id="answer"></h1>
                         <div id="keyboard" class="pb-5 mt-5">
                         </div>
@@ -164,6 +185,13 @@ if ($gameState['started'] === 0) {
                 </div>
             </div>
         </div>
+        <form id="guessesForm" action="lobby.php" method="POST" style="display: none;">
+            <input type="hidden" name="guesses" id="guessesInput">
+        </form>
+        <form id="wordForm" action="lobby.php" method="POST" style="display: none;">
+            <input type="hidden" name="word" id="wordInput" value="<?= htmlspecialchars($word) ?>">
+        </form>
+
     </main>
 
     <footer>

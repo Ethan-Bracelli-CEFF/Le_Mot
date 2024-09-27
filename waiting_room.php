@@ -22,7 +22,7 @@ if (!in_array($_SESSION['user_id'], $ids_joueurs)) {
     exit();
 }
 
-if ($gameState['started'] === 1){
+if ($gameState['status'] === 1){
     header("Location: lobby.php");
     exit();
 }
@@ -130,7 +130,7 @@ if ($gameState['started'] === 1){
                                 <!-- Bouton pour retirer un joueur -->
                                 <div class="col-12 d-flex justify-content-center" style="margin-bottom: 20px; margin-top: 100px;">
                                     <form method="post" action="delete_a_game.php">
-                                        <input type="hidden" name="player_id" value="<?= htmlspecialchars($player['id_utilisateur']) ?>">
+                                        <input type="hidden" name="player_id" value="<?= htmlspecialchars($_SESSION['user_id']) ?>">
                                         <input type="hidden" name="game_id" value="<?= htmlspecialchars($gameId) ?>">
                                         <button type="submit" class="btn btn-danger btn-sm">Quitter la partie</button>
                                     </form>
@@ -141,7 +141,7 @@ if ($gameState['started'] === 1){
                                 <!-- Bouton pour retirer un joueur -->
                                 <div class="col-12 d-flex justify-content-center" style="margin-bottom: 20px; margin-top: 100px;">
                                     <form method="post" action="leave_a_game.php">
-                                        <input type="hidden" name="player_id" value="<?= htmlspecialchars($player['id_utilisateur']) ?>">
+                                        <input type="hidden" name="player_id" value="<?= htmlspecialchars($_SESSION['user_id']) ?>">
                                         <input type="hidden" name="game_id" value="<?= htmlspecialchars($gameId) ?>">
                                         <button type="submit" class="btn btn-danger btn-sm">Quitter la partie</button>
                                     </form>
