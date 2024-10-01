@@ -23,7 +23,7 @@ if (!in_array($_SESSION['user_id'], $ids_joueurs)) {
 }
 
 if ($gameState['status'] === 1){
-    header("Location: lobby.php");
+    header("Location: join_round.php");
     exit();
 }
 

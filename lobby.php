@@ -10,6 +10,7 @@ $gameHost = $db->getUser($gameHostId);
 $gameCode = $game['code'];
 $nbRound = $game['nbRound'];
 $word = $db->getWordByUser($_SESSION['user_id']);
+$word = $word['mot'];
 $roundId = $db->getRoundIdByUser($_SESSION['user_id']);
 $roundNumber = $db->getRoundNumberById($roundId['id_round']);
 $roundNumber = $roundNumber['number'];
