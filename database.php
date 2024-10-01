@@ -201,11 +201,11 @@ class Database
         $stmt->execute();
     }
 
-    public function setWord($gameId, $word)
+    public function setRoundForUser($roundId, $userId)
     {
-        $stmt = $this->db->prepare("UPDATE games SET mot = :word WHERE id_game = :gameId");
-        $stmt->bindParam(':gameId', $gameId, PDO::PARAM_INT);
-        $stmt->bindParam(':word', $word, PDO::PARAM_INT);
+        $stmt = $this->db->prepare("UPDATE utilisateurs SET rounds_id_round = :roundId WHERE id_utilisateur = :userId");
+        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $stmt->bindParam(':roundId', $roundId, PDO::PARAM_INT);
         $stmt->execute();
     }
 
@@ -231,6 +231,14 @@ class Database
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getRoundIdByGameAndNumber($id_game, $number){
+        $stmt = $this->db->prepare("SELECT id_round FROM rounds WHERE games_id_game = :id_game AND number = :number");
+        $stmt->bindParam(':id_game', $id_game, PDO::PARAM_STR);
+        $stmt->bindParam(':number', $number, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function getRoundIdByUser($userId)
     {
         $sql = "SELECT rounds.id_round
@@ -244,4 +252,14 @@ class Database
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function createRound($mot, $id_game, $number)
+    {
+        $stmt = $this->db->prepare("INSERT INTO rounds (mot, games_id_game, number) VALUES (:mot, :id_game, :number)");
+        $stmt->bindParam(':mot', $mot, PDO::PARAM_STR);
+        $stmt->bindParam(':id_game', $id_game, PDO::PARAM_STR);
+        $stmt->bindParam(':number', $number, PDO::PARAM_STR);
+        $stmt->execute();
+    }
+
 }

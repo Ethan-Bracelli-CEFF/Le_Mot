@@ -123,7 +123,7 @@ if ($gameState['status'] === 1){
 
                             <?php if ($gameHostId === $_SESSION['user_id']): ?>
                                 <div class="col-12 d-flex justify-content-center" style="margin-bottom: 20px; margin-top: 100px;">
-                                    <button onclick="window.location.href='lobby.php'" class="rounded-5 fw-bold Shadow-lg bouton-main" style="width: 300px;">Lancer la partie !</button>
+                                    <button onclick="window.location.href='create_rounds.php'" class="rounded-5 fw-bold Shadow-lg bouton-main" style="width: 300px;">Lancer la partie !</button>
                                 </div>
                             <?php endif; ?>
                             <?php if ($gameHostId === $_SESSION['user_id']): ?>

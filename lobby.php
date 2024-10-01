@@ -11,7 +11,8 @@ $gameCode = $game['code'];
 $nbRound = $game['nbRound'];
 $word = $db->getWordByUser($_SESSION['user_id']);
 $roundId = $db->getRoundIdByUser($_SESSION['user_id']);
-$roundNumber = $db->getRoundNumberById($roundId);
+$roundNumber = $db->getRoundNumberById($roundId['id_round']);
+$roundNumber = $roundNumber['number'];
 
 $gamePlayers = $db->getPlayersByGame($gameId);
 
@@ -24,11 +25,10 @@ if (!in_array($_SESSION['user_id'], $ids_joueurs)) {
     exit();
 }
 
-$db->startGame($gameId);
 
 $gameState = $db->isStarted($gameId);
 
-if ($gameState['status'] === 0) {
+if ($gameState === 0) {
     header("Location: main.php");
     exit();
 }
