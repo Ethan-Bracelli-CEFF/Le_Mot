@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <label for="nbRound" class="form-label">Entrez le nombre de round :</label>
                     </div>
                     <div class="col-6 d-flex justify-content-start">
-                        <input type="number" name="nbRound" class="form-control input-custom" style="width: 300px;" required min="1">
+                        <input type="number" name="nbRound" class="form-control input-custom" style="width: 300px;" required min="1" max="10">
                     </div>
                 </div>
                 <div class="row" style="margin-bottom: 100px;">

@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['code']) && isset($_POS
     $game = $db->getPrivateGameByCode($code);
     if (isset($game) && $game !== false) {
         if ($password === $game['password']) {
-            if($game['started'] === 0){
+            if($game['status'] === 0){
                 $_SESSION['game'] = $game;
                 $db->updatePlayerGame($_SESSION['user_id'], $game['id_game']);
                 header('Location: waiting_room.php');
@@ -129,7 +129,7 @@ $publicGames = $db->getPublicGames();
                             <?php
                                 }
                             } else {
-                                echo "<p>Aucune partie trouvée.</p>";
+                                echo "<p style=\"color: white\">Aucune partie trouvée.</p>";
                             }
                             ?>
                             <div class="col-12 d-flex justify-content-center" style="margin-bottom: 20px;">

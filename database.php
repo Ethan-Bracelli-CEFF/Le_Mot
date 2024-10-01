@@ -120,7 +120,7 @@ class Database
         $stmt->execute();
     }
 
-    public function createPrivateGame($name, $hostId, $difficulty, $code, $password)
+    public function createPrivateGame($name, $hostId, $difficulty, $code, $password, $nbround)
     {
         $stmt = $this->db->prepare("INSERT INTO games (name, hostId, difficulty, code, password, private, status, nbRound) VALUES (:name, :hostId, :difficulty, :code, :password, 1, 0, :nbround)");
         $stmt->bindParam(':name', $name, PDO::PARAM_STR);

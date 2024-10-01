@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_game = $_POST['id_game'];
     $game = $db->getGameById($id_game);
 
-    if($game['started'] === 0){
+    if($game['status'] === 0){
         $_SESSION['game'] = $game;
         $db->updatePlayerGame($_SESSION['user_id'], $game['id_game']);
         header('Location: waiting_room.php');

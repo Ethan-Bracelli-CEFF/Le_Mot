@@ -40,7 +40,7 @@ if (isset($_POST['guesses'])) {
 
 if ($roundNumber > $nbRound) {
     $roundNumber = 0;
-    header("Location: leaderboard.php")
+    header("Location: leaderboard.php");
 }
 ?>
 <!doctype html>
