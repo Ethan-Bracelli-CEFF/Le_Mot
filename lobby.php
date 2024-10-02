@@ -12,7 +12,8 @@ $nbRound = $game['nbRound'];
 $word = $db->getWordByUser($_SESSION['user_id']);
 $word = $word['mot'];
 $roundId = $db->getRoundIdByUser($_SESSION['user_id']);
-$roundNumber = $db->getRoundNumberById($roundId['id_round']);
+$roundId = $roundId['id_round'];
+$roundNumber = $db->getRoundNumberById($roundId);
 $roundNumber = $roundNumber['number'];
 
 $gamePlayers = $db->getPlayersByGame($gameId);
@@ -26,6 +27,14 @@ if (!in_array($_SESSION['user_id'], $ids_joueurs)) {
     exit();
 }
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $roundNumber++;
+    $roundId = $db->getRoundIdByGameAndNumber($gameId, $roundNumber);
+    $roundId = $roundId['id_round'];
+    $db->setRoundForUser($roundId, $_SESSION['user_id']);
+    $word = $db->getWordByUser($_SESSION['user_id']);
+    $word = $word['mot'];
+}
 
 $gameState = $db->isStarted($gameId);
 
@@ -84,7 +93,7 @@ if ($roundNumber > $nbRound) {
                 <div class="col-3 mx-0">
                     <div class="container fond rounded-5 priv-tab">
                         <!-- <div class="row"> -->
-                        <h1 class="text-center text-tab pt-4" style="margin-bottom: 100px;">Classement</h1>
+                        <h1 class="text-center text-tab pt-4" style="margin-bottom: 100px;">Participants</h1>
                         <div class="container">
                             <!-- <div class="row"> -->
                             <?php foreach ($gamePlayers as $player): ?>
@@ -172,16 +181,19 @@ if ($roundNumber > $nbRound) {
                                     </div>
                                 <?php endif; ?>
                                 <div class="col">
-                                    <h3 class="text-center text-tab p-3"> Round : <?php echo ($roundNumber."/".$nbRound) ?></h3>
+                                    <h3 class="text-center text-tab p-3"> Round : <?php echo ($roundNumber . "/" . $nbRound) ?></h3>
                                 </div>
                             </div>
                         </h3>
                         <br>
-                        <div id="board">
+                        <div class="container-fluid" id="board">
                         </div>
                         <h1 id="answer"></h1>
                         <div id="keyboard" class="pb-5 mt-5">
                         </div>
+                        <form action="lobby.php" id="next" method="POST" style="display: none;">
+                            <input type="submit" id="nextSubmit" value="Suivant" class="rounded-5 fw-bold Shadow-lg bouton-main" style="padding: 5px;">
+                        </form>
                     </div>
                 </div>
             </div>
@@ -191,6 +203,9 @@ if ($roundNumber > $nbRound) {
         </form>
         <form id="wordForm" action="lobby.php" method="POST" style="display: none;">
             <input type="hidden" name="word" id="wordInput" value="<?= htmlspecialchars($word) ?>">
+        </form>
+        <form id="roundForm" action="lobby.php" method="POST" style="display: none;">
+            <input type="hidden" name="round" id="roundInput" value="<?= htmlspecialchars($roundNumber) ?>">
         </form>
 
     </main>

@@ -21,12 +21,27 @@ hr {
 }
 
 #board {
-    /* width: 350px; */
-    height: 420px;
+    width: fit-content;
     margin: 0 auto;
-    margin-top: 3px;
-    display: flex;
+    /* margin-top: 3px;  */
+    padding: 3px;
     flex-wrap: wrap;
+    justify-content: center;
+}
+
+#next {
+    display: flex;
+    justify-content: center; /* Centre le formulaire horizontalement */
+    align-items: center; /* Centre verticalement */
+    padding: 10px; /* Ajoute de l'espace intérieur */
+}
+
+#nextSubmit {
+    align-self: center;
+}
+
+.col {
+    padding: 0px;
 }
 
 .tile {

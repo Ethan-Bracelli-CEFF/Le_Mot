@@ -62,7 +62,25 @@ var guessList = [
     // Autres
     "soleil", "lune", "pluie", "neige", "vent", "orage", "nuage", "arc", "ciel", "terre", "mer",
     "ocean", "montagne", "foret", "desert", "riviere", "lac", "volcan", "plateau", "prairie",
-    "village", "ville", "metropole", "quartier", "avenue", "boulevard", "rue", "rondpoint", "impasse", "passage"
+    "village", "ville", "metropole", "quartier", "avenue", "boulevard", "rue", "rondpoint", "impasse", "passage",
+
+    "arbre", "blanc", "boire", "boule", "chant", "corps", "danse", "douce", "envie", "eclat", "femme", "flote", "fruit",
+    "hatez", "louer", "mètre", "paume", "plage", "porte", "sable", "sauce", "table", "valet", "wagon", "sucre",
+    "bande", "pomme", "adieu", "belle", "chose", "drape", "foyer", "globe", "grace", "signe", "zebre", "yacht",
+    "grain", "force", "hiver", "biche", "maman", "plume", "reine", "salut", "avril", "ferme", "creme", "valet",
+    "vivre", "peine", "tache", "singe", "neige", "sourd", "garde", "haine", "jaune", "larme", "marin", "soupe", "tasse",
+    "crise", "image", "lutte", "tapis", "cacao", "parle", "songe", "fille", "tigre", "vigne", "sorte", "pluie",
+
+    "aboyer", "agacer", "alarme", "baiser", "banque", "blouse", "bougie", "briser", "chaise", "cigale",
+    "ciseau", "coller", "désert", "écrire", "epices", "fermer", "flamme", "fraise", "gagner",
+    "garcon", "glacer", "joueur", "jungle", "laitue", "lavage", "legume", "manche", "marche", "marier", "manger", "mentir", "monter",
+    "mousse", "nature", "obscur", "orange", "panier", "parfum", "pattes", "plante", "prince", "ranger", "regret",
+    "risque", "rouler", "salade", "souper", "tonner", "tramer", "triste", "valise", "vendre", "vibrer", "violet",
+    "vortex", "voyage", "zodiac", "bambou", "cactus", "cerise",
+
+    "fidelite", "enrouler", "anatomie", "chiffres", "combiner", "huitième", "bataille", "materiel", "blizzard", "admirant", "visiteur", "obstacle", "aerienne",
+    "chocolat", "marchand", "flottant", "surprise", "naviguer", "coupable", "eclairer", "albatros", "analogie", "triangle",
+    "detecter", "policier", "vocation", "allumage", "ecrivain", "bananier", "parfumee", "attendri", "jalousie", "regarder", "prochain"
 ];
 
 
@@ -75,7 +93,6 @@ function intialize() {
 
     width = word.length;
 
-
     // Create the game board
     for (let r = 0; r < height; r++) {
         let row = document.createElement("div");
@@ -87,16 +104,17 @@ function intialize() {
             // <span id="0-0" class="tile">P</span>
             let col = document.createElement("div");
             col.classList.add("col");
-            col.id = r.toString() + "-" + c.toString() +"-" + "col";
+            col.id = r.toString() + "-" + c.toString() + "-" + "col";
             document.getElementById(r.toString() + "-" + "row").appendChild(col);
             let tile = document.createElement("span");
             tile.id = r.toString() + "-" + c.toString();
             tile.classList.add("tile");
             tile.innerText = "";
-            document.getElementById(r.toString() + "-" + c.toString() +"-" + "col").appendChild(tile);
+            document.getElementById(r.toString() + "-" + c.toString() + "-" + "col").appendChild(tile);
 
         }
     }
+
 
     // Create the key board
     let keyboard = [
@@ -197,8 +215,8 @@ function processInput(e) {
     }
 
     if (!gameOver && row == height) {
-        gameOver = true;
         document.getElementById("answer").innerText = word;
+        gameOver = true;
     }
 }
 
@@ -291,9 +309,9 @@ function update() {
 
     // Vérifie si le jeu est terminé (soit par victoire, soit par épuisement des tentatives)
     if (gameOver || row >= MAX_ATTEMPTS) {
-        gameOver = true;
         document.getElementById("answer").innerText = word;
         sendGuesses(guesses); // Appelle la fonction pour envoyer les tentatives
+        gameOver = true;
     }
 }
 
@@ -302,6 +320,6 @@ function sendGuesses(guesses) {
     document.getElementById('guessesInput').value = guesses;
 
     // Soumet le formulaire pour envoyer les données à PHP
-    document.getElementById('guessesForm').submit();
+    document.getElementById('next').style.display = "flex";
 }
 
