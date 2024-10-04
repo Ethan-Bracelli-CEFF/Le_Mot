@@ -48,7 +48,7 @@ if ($gameState['status'] === 1){
         // Fonction qui actualise la page toutes les secondes
         setInterval(function(){
             location.reload();
-        }, 1000); // 1000 millisecondes = 1 seconde
+        }, 3000); // 1000 millisecondes = 1 seconde
     </script>
 </head>
 

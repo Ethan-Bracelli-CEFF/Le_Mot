@@ -11,6 +11,7 @@ foreach ($gamePlayers as $player){
     $playerId = $player['id_utilisateur'];
 
     $db->removePlayerFromGame($gameId, $playerId);
+    $db->resetPoints($playerId);
 }
 
 $db->deletegame($gameId);

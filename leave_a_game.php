@@ -7,6 +7,7 @@ $gameId = $_POST['game_id'];
 
 
 $db->removePlayerFromGame($gameId, $userId);
+$db->resetPoints($userId);
 
 header("Location: main.php");
 exit();

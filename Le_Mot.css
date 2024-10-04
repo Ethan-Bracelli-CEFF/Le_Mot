@@ -117,3 +117,31 @@
 .row-list {
     height: 40px;
 }
+
+.leaderboard-element {
+    background-color: #756d8a;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    color: white;
+}
+
+.leaderboard-first {
+    background-color: #d8c93f;
+    color: white;
+}
+
+.leaderboard-second {
+    background-color: #C0C0C0;
+    color: black;
+}
+
+.leaderboard-third {
+    background-color: #ce8946;
+    color: white;
+}
+
+.leaderboard-title {
+    background-color: #756d8a;
+}

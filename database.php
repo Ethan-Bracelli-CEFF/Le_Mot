@@ -186,6 +186,13 @@ class Database
         $stmt->execute();
     }
 
+    public function stopGame($gameId)
+    {
+        $stmt = $this->db->prepare("UPDATE games SET status = 0 WHERE id_game = :gameId");
+        $stmt->bindParam(':gameId', $gameId, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
     public function isStarted($gameId)
     {
         $stmt = $this->db->prepare("SELECT status FROM games WHERE id_game = :gameId");
@@ -260,6 +267,14 @@ class Database
         $stmt->bindParam(':id_game', $id_game, PDO::PARAM_STR);
         $stmt->bindParam(':number', $number, PDO::PARAM_STR);
         $stmt->execute();
+    }
+
+    public function getLeaderboard($id_game)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM utilisateurs WHERE games_id_game = :id_game ORDER BY points ASC");
+        $stmt->bindParam(':id_game', $id_game, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }
