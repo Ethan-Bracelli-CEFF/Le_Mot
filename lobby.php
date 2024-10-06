@@ -191,19 +191,20 @@ if ($roundNumber > $nbRound) {
                         <h1 id="answer"></h1>
                         <div id="keyboard" class="pb-5 mt-5">
                         </div>
-                        <form action="lobby.php" id="next" method="POST" style="display: none;">
-                            <input type="submit" id="nextSubmit" value="Suivant" class="rounded-5 fw-bold Shadow-lg bouton-main" style="padding: 5px;">
+                        <form id="guessesForm" action="lobby.php" method="POST" >
+                            <input type="submit" id="nextSubmit" value="Suivant" class="rounded-5 fw-bold Shadow-lg bouton-main" style="padding: 5px; display: none;">
+                            <input type="hidden" name="guesses" id="guessesInput" >
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-        <form id="guessesForm" action="lobby.php" method="POST" style="display: none;">
-            <input type="hidden" name="guesses" id="guessesInput">
-        </form>
+
+
         <form id="wordForm" action="lobby.php" method="POST" style="display: none;">
             <input type="hidden" name="word" id="wordInput" value="<?= htmlspecialchars($word) ?>">
         </form>
+
         <form id="roundForm" action="lobby.php" method="POST" style="display: none;">
             <input type="hidden" name="round" id="roundInput" value="<?= htmlspecialchars($roundNumber) ?>">
         </form>
