@@ -258,23 +258,23 @@ function update() {
     // First iteration, check all the correct ones first
     for (let c = 0; c < width; c++) {
         let currTile = document.getElementById(row.toString() + '-' + c.toString());
-        let letter = currTile.innerText;
+        let letter = currTile.innerText.toLowerCase();
 
         // Is it in the correct position?
         if (word[c] == letter) {
             currTile.classList.add("correct");
 
-            let keyTile = document.getElementById("Key" + letter);
+            let keyTile = document.getElementById("Key" + letter.toUpperCase());
             keyTile.classList.remove("present");
             keyTile.classList.add("correct");
 
             correct += 1;
             letterCount[letter] -= 1; // Deduct the letter count
+            guesses += 1 / width;
         }
 
         if (correct == width) {
             gameOver = true;
-            guesses++; // Incrémente le compteur de tentatives
             sendGuesses(guesses); // Appelle la fonction pour envoyer les tentatives
         }
     }
@@ -282,7 +282,7 @@ function update() {
     // Go again and mark which ones are present but in the wrong position
     for (let c = 0; c < width; c++) {
         let currTile = document.getElementById(row.toString() + '-' + c.toString());
-        let letter = currTile.innerText;
+        let letter = currTile.innerText.toLowerCase();
 
         // Skip the letter if it has been marked correct
         if (!currTile.classList.contains("correct")) {
@@ -290,22 +290,24 @@ function update() {
             if (word.includes(letter) && letterCount[letter] > 0) {
                 currTile.classList.add("present");
 
-                let keyTile = document.getElementById("Key" + letter);
+                let keyTile = document.getElementById("Key" + letter.toUpperCase());
                 if (!keyTile.classList.contains("correct")) {
                     keyTile.classList.add("present");
+                    guesses += 1 / width;
                 }
                 letterCount[letter] -= 1;
             } else {
                 currTile.classList.add("absent");
-                let keyTile = document.getElementById("Key" + letter);
+                let keyTile = document.getElementById("Key" + letter.toUpperCase());
                 keyTile.classList.add("absent");
+                guesses += 1 / width;
             }
         }
+        
     }
 
     row += 1; // Start new row
-    col = 0; // Start at 0 for new row
-    guesses++; // Incrémente le compteur de tentatives
+    col = 0; // Start at 0 for new row; // Incrémente le compteur de tentatives
 
     // Vérifie si le jeu est terminé (soit par victoire, soit par épuisement des tentatives)
     if (gameOver || row >= MAX_ATTEMPTS) {
@@ -320,6 +322,6 @@ function sendGuesses(guesses) {
     document.getElementById('guessesInput').value = guesses;
 
     // Soumet le formulaire pour envoyer les données à PHP
-    document.getElementById('next').style.display = "flex";
+    document.getElementById('nextSubmit').style.display = "flex";
 }
 
